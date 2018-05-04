@@ -57,6 +57,11 @@ web:
 
             # Deny access to static files in this location.
             allow: false
+            
+            # Add some default headers.
+            headers:
+              X-Frame-Options: SAMEORIGIN
+              X-Content-Type-Options: nosniff
 
             # Rules for specific URI patterns.
             rules:
