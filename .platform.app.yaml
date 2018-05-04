@@ -60,8 +60,8 @@ web:
             
             # Add some default headers.
             headers:
-              X-Frame-Options: SAMEORIGIN
-              X-Content-Type-Options: nosniff
+                X-Frame-Options: SAMEORIGIN
+                X-Content-Type-Options: nosniff
 
             # Rules for specific URI patterns.
             rules:
