@@ -7,7 +7,10 @@
 name: 'app'
 
 # The runtime the application uses.
-type: 'php:7.0'
+type: 'php:5.6'
+
+# Changed this to S, so that a worker could be added with same amount of CPU
+size: 'S'
 
 # Configuration of the build of this application.
 build:
@@ -91,14 +94,70 @@ mounts:
     '/drush-backups': 'shared:files/drush-backups'
 
 # The hooks executed at various points in the lifecycle of the application.
+
+# rename some files in the imagesloaded library
+# create a symlink for the multisite name
 hooks:
+    build: |
+        set -e
+
+        # Sets a symlink to the $BASE_URL platform variable to help convert from multisite
+        cd /app/public/sites
+        ln -s default $BASE_URL
+
+        # Install Behat
+        cd /app/public/sites/default/behat
+        composer install
+        bin/behat --init
+
+        # Fix up the jquery.imagesloaded library if you have it installed
+        #cd /app/public/sites/all/libraries/jquery.imagesloaded
+        #cp imagesloaded.js jquery.imagesloaded.js
+        #cp imagesloaded.pkgd.min.js jquery.imagesloaded.pkgd.min.js
+
     # We run deploy hook after your application has been deployed and started.
     deploy: |
-      cd public
-      drush -y updatedb
+        set -e
 
+        # Update schema if needed
+        cd public
+        drush -y updatedb
+
+        # Build and run Drush registry_rebuild
+        drush dl registry_rebuild-7.x-2.3 --destination=/app/tmp
+        sed -i 's/, define_drupal_root()/, '"'"'\/app\/public'"'"'/' /app/tmp/registry_rebuild/registry_rebuild.php
+        cd /app/public
+        php ../tmp/registry_rebuild/registry_rebuild.php
+
+    post_deploy: |
+        set -e
+
+        # run behat shell script
+        TARGET_URL="https://${BASE_URL}"
+        cd /app/public/sites/default/behat
+        sh ws_behat.sh ${TARGET_URL} $PLATFORM_ENVIRONMENT $PLATFORM_BRANCH
+        
 # The configuration of scheduled execution.
 crons:
     drupal:
         spec: '*/20 * * * *'
         cmd: 'cd public ; drush core-cron'
+    snapshot:
+        spec: '15 3 * * *'
+        cmd: |
+            if [ "$PLATFORM_BRANCH" = master ]; then
+                platform snapshot:create --yes --no-wait
+            fi
+# Add a custom worker
+# Build fails, due to plan exceeding limit
+
+#workers:
+#    sync:
+#        size: 'S'
+#        commands:
+#            start: |
+#                php work.php
+#        variables:
+#            env:
+#                type: 'worker'
+#        disk: 512

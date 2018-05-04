@@ -1,13 +1,12 @@
-api = 2
 core = 7.x
+api = 2
 
-; Drupal core.
-projects[drupal][type] = core
-projects[drupal][version] = 7.59
-projects[drupal][patch][] = "https://drupal.org/files/issues/install-redirect-on-empty-database-728702-36.patch"
+includes[] = project-core.make
 
-; Drush make allows a default sub directory for all contributed projects.
-defaults[projects][subdir] = contrib
+; THEMES
 
-; Platform indicator module.
-projects[platform][version] = 1.4
+
+; MODULES
+
+
+; LIBRARIES

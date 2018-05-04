@@ -1,0 +1,59 @@
+default:
+  suites:
+    default:
+      filters:
+        tags: ~@javascript
+      contexts:
+        - Drupal\DrupalExtension\Context\RawDrupalContext
+        - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MarkupContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\MinkContext
+        - FeatureContext:
+            parameters:
+              screenshot_dir: %paths.base%/screenshots
+    ajax:
+      filters:
+        tags: "@javascript"
+      contexts:
+        - Drupal\DrupalExtension\Context\RawDrupalContext
+        - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MarkupContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Behat\MinkExtension\Context\MinkContext
+        - FeatureContext:
+            parameters:
+              screenshot_dir: %paths.base%/screenshots
+  extensions:
+    Behat\MinkExtension:
+      files_path: '%paths.base%'
+      goutte: ~
+      selenium2:
+        wd_host: http://127.0.0.1:4444/wd/hub
+        capabilities:
+          marionette: null
+          browserName: chrome
+          browser: chrome
+          version: ''
+      javascript_session: selenium2
+      browser_name: chrome
+    Drupal\DrupalExtension:
+      blackbox: ~
+      api_driver: 'drush'
+      drush:
+        alias: master
+      region_map:
+        header:  "#ubc7-header"
+        content: "#unit-content"
+        footer:  "#ubc7-footer"
+        body:    "body"
+        alert: ".alert"
+      selectors:
+        message_selector: '.messages'
+        error_message_selector: '.messages.messages--error'
+        success_message_selector: '.messages.messages--status'
+
+
+
