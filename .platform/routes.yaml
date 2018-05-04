@@ -7,10 +7,27 @@
     type: upstream
     upstream: "app:http"
     cache:
+      enabled: true
+      # Base the cache on the session, simplesaml cookies. Ignore all other cookies.
+      cookies: ['/^SS?ESS/', '/^SimpleSAML/']
+    tls:
+      min_version: TLSv1.2
+      strict_transport_security:
         enabled: true
-        # Base the cache on the session cookie. Ignore all other cookies.
-        cookies: ['/^SS?ESS/']
+        include_subdomains: true
+        preload: true
 
+# strip www prefix
 "https://www.{default}/":
     type: redirect
     to: "https://{default}/"
+
+# force SSL
+"http://{default}/":
+   type: redirect
+   to: "https://{default}/"
+
+# force SSL, strip www prefix
+"http://www.{default}/":
+   type: redirect
+   to: "https://{default}/"
