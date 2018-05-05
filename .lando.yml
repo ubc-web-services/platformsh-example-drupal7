@@ -1,0 +1,4 @@
+name: sitename
+recipe: drupal7
+config:
+  webroot: _www
