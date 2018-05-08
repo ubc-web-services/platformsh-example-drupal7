@@ -21,13 +21,3 @@
 "https://www.{default}/":
     type: redirect
     to: "https://{default}/"
-
-# force SSL
-"http://{default}/":
-   type: redirect
-   to: "https://{default}/"
-
-# force SSL, strip www prefix
-"http://www.{default}/":
-   type: redirect
-   to: "https://{default}/"
