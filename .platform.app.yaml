@@ -115,6 +115,10 @@ hooks:
         composer install
         bin/behat --init
 
+        # Download registry_rebuild to use later if needed. This installs to the
+        # global Drush directory.
+        drush dl registry_rebuild-7.x-2.3 --yes
+
         # Fix up the jquery.imagesloaded library if you have it installed
         #cd /app/public/sites/all/libraries/jquery.imagesloaded
         #cp imagesloaded.js jquery.imagesloaded.js
@@ -128,11 +132,8 @@ hooks:
         cd public
         drush -y updatedb
 
-        # Build and run Drush registry_rebuild
-        drush dl registry_rebuild-7.x-2.3 --destination=/app/tmp
-        sed -i 's/, define_drupal_root()/, '"'"'\/app\/public'"'"'/' /app/tmp/registry_rebuild/registry_rebuild.php
-        cd /app/public
-        php ../tmp/registry_rebuild/registry_rebuild.php
+        # Rebuild the registry.
+        drush registry-rebuild
 
     post_deploy: |
         set -e
