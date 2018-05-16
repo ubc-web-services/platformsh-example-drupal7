@@ -57,7 +57,7 @@ web:
 
             # Deny access to static files in this location.
             allow: false
-            
+
             # Add some default headers.
             headers:
                 X-Frame-Options: SAMEORIGIN
@@ -119,6 +119,10 @@ hooks:
         # global Drush directory.
         drush dl registry_rebuild-7.x-2.3 --yes
 
+        # Download site_audit to use later. This installs to the
+        # global Drush directory.
+        # drush dl site_audit-7.x-1.x-dev --yes
+
         # Fix up the jquery.imagesloaded library if you have it installed
         #cd /app/public/sites/all/libraries/jquery.imagesloaded
         #cp imagesloaded.js jquery.imagesloaded.js
@@ -142,7 +146,10 @@ hooks:
         TARGET_URL="https://${BASE_URL}"
         cd /app/public/sites/default/behat
         sh ws_behat.sh ${TARGET_URL} $PLATFORM_ENVIRONMENT $PLATFORM_BRANCH
-        
+
+        # run site audit and write results to files directory
+        # drush aa --html --bootstrap --detail --skip=insights > /app/public/sites/default/files/report.html
+
 # The configuration of scheduled execution.
 crons:
     drupal:
