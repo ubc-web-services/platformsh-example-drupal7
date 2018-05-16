@@ -6,6 +6,7 @@ includes[] = project-core.make
 ;DEFAULT MODULES
 
 projects[smtp][version] = "1.7"
+projects[smtp][patch][] = "https://raw.githubusercontent.com/ubc-web-services/patches/master/smtp.phpmailer.inc.mail.ubc.ca.patch"
 
 projects[seckit][version] = "1.9"
 
