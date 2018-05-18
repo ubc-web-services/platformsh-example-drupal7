@@ -9,9 +9,6 @@ name: 'app'
 # The runtime the application uses.
 type: 'php:5.6'
 
-# Changed this to S, so that a worker could be added with same amount of CPU
-size: 'S'
-
 # Configuration of the build of this application.
 build:
     flavor: drupal
