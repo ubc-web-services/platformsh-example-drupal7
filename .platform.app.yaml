@@ -9,9 +9,6 @@ name: 'app'
 # The runtime the application uses.
 type: 'php:5.6'
 
-# Changed this to S, so that a worker could be added with same amount of CPU
-size: 'S'
-
 # Configuration of the build of this application.
 build:
     flavor: drupal
@@ -66,7 +63,7 @@ web:
             # Rules for specific URI patterns.
             rules:
                 # Allow access to common static files.
-                '\.(jpe?g|png|gif|svgz?|css|js|map|ico|bmp|eot|woff2?|otf|ttf)$':
+                '\.(jpe?g|png|gif|svgz?|css|pdf|js|map|mov|mp4|mp3|ico|bmp|eot|woff2?|otf|ttf)$':
                     allow: true
                 '^/robots\.txt$':
                     allow: true
@@ -119,6 +116,10 @@ hooks:
         # global Drush directory.
         drush dl registry_rebuild-7.x-2.3 --yes
 
+        # Download site_audit to use later. This installs to the
+        # global Drush directory.
+        # drush dl site_audit-7.x-1.x-dev --yes
+
         # Fix up the jquery.imagesloaded library if you have it installed
         #cd /app/public/sites/all/libraries/jquery.imagesloaded
         #cp imagesloaded.js jquery.imagesloaded.js
@@ -142,6 +143,9 @@ hooks:
         TARGET_URL="https://${BASE_URL}"
         cd /app/public/sites/default/behat
         bash ws_behat.sh ${TARGET_URL} $PLATFORM_ENVIRONMENT $PLATFORM_BRANCH
+
+        # run site audit and write results to files directory
+        # drush aa --html --bootstrap --detail --skip=insights > /app/public/sites/default/files/report.html
 
 # The configuration of scheduled execution.
 crons:
