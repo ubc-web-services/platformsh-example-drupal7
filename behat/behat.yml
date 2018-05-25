@@ -43,13 +43,16 @@ default:
       blackbox: ~
       api_driver: 'drush'
       drush:
-        alias: master
+        root: /app/public
       region_map:
-        header:  "#ubc7-header"
-        content: "#unit-content"
-        footer:  "#ubc7-footer"
-        body:    "body"
-        alert: ".alert"
+        header:   "#ubc7-header"
+        unit:     "#ubc7-unit"
+        content:  "#unit-content"
+        footer:   "#ubc7-footer"
+        body:     "body"
+        wordmark: "#ubc7-wordmark"
+        logo:     "#ubc7-logo"
+        alert:    ".alert"
       selectors:
         message_selector: '.messages'
         error_message_selector: '.messages.messages--error'

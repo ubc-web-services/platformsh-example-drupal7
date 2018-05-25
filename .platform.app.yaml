@@ -57,7 +57,7 @@ web:
 
             # Deny access to static files in this location.
             allow: false
-            
+
             # Add some default headers.
             headers:
                 X-Frame-Options: SAMEORIGIN
@@ -141,8 +141,8 @@ hooks:
         # run behat shell script
         TARGET_URL="https://${BASE_URL}"
         cd /app/public/sites/default/behat
-        sh ws_behat.sh ${TARGET_URL} $PLATFORM_ENVIRONMENT $PLATFORM_BRANCH
-        
+        bash ws_behat.sh ${TARGET_URL} $PLATFORM_ENVIRONMENT $PLATFORM_BRANCH
+
 # The configuration of scheduled execution.
 crons:
     drupal:

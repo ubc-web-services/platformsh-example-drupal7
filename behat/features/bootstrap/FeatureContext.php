@@ -54,6 +54,20 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     return glob(__DIR__ . '/../../../../i18n/*.xliff');
   }
 	/**
+		* @BeforeSuite
+		*/
+	public static function beforeSuite()
+	{
+		echo "Starting...";
+	}
+	/**
+		* @AfterSuite
+		*/
+	public static function afterSuite()
+	{
+		echo "Terminating...";
+	}
+	/**
 	 * Take screenshot when step fails. Works only with Selenium2Driver.
 	 * Screenshot is saved at [Date]/[Feature]/[Scenario]/[Step].jpg
 	 *
@@ -84,22 +98,24 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function iMustBeOn($arg1)
   {
-    $cleaned = $this->getCleanURL($this->getSession()->getCurrentUrl());
-    if ($this->endsWith($arg1, "=")) {
-    	$arg1 = $arg1 . urlencode($this->getMinkParameter('base_url'));
+    $cleaned_actual = $this->getCleanURL($this->getSession()->getCurrentUrl());
+    $cleaned_expect = $this->getCleanURL($this->locatePath($arg1));
+    if ($this->endsWith($cleaned_expect, "=")) {
+    	$cleaned_expect = $cleaned_expect . urlencode($this->getMinkParameter('base_url'));
     }
-    $this->assert($cleaned == $arg1, $cleaned . "!=" . $arg1);
+    $this->assert($cleaned_actual == $cleaned_expect, $cleaned_actual . "!=" . $cleaned_expect);
   }
   /**
    * @Then I must not be on :arg1
    */
   public function iMustNotBeOn($arg1)
   {
-    $cleaned = $this->getCleanURL($this->getSession()->getCurrentUrl());
-    if ($this->endsWith($arg1, "=")) {
-    	$arg1 = $arg1 . urlencode($this->getMinkParameter('base_url'));
+    $cleaned_actual = $this->getCleanURL($this->getSession()->getCurrentUrl());
+    $cleaned_expect = $this->getCleanURL($arg1);
+    if ($this->endsWith($cleaned_expect, "=")) {
+    	$cleaned_expect = $cleaned_expect . urlencode($this->getMinkParameter('base_url'));
     }
-    $this->assert($cleaned != $arg1, $cleaned . "==" . $arg1);
+    $this->assert($cleaned_actual != $cleaned_expect, $cleaned_actual . "==" . $cleaned_expect);
   }
 
   /**
@@ -158,16 +174,43 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
   /**
 	 * Clicks link with specified id|title|alt|text
-	 * Example: When I follow "Log In" in the "#form"
+	 * Example: When I find "Log In" in the "#form"
 	 *
-	 * @When /^(?:|I )follow "(?P<link>(?:[^"]|\\")*)" in the "(?P<region>(?:[^"]|\\")*)"$/
+	 * @When /^(?:|I )find "(?P<link>(?:[^"]|\\")*)" in the "(?P<region>(?:[^"]|\\")*)"$/
 	 */
-	public function clickLinkInTheRegion($link, $region)
+	public function findLinkInTheRegion($link, $region)
 	{
 			$link = $this->fixStepArgument($link);
-			$element = $this->getSession()->getPage()->find("css", $region);
+			$element = $this->getSession()->getPage()->find("region", $region);
 			$this->assert(isset($element), "Element not found");
-			$element->clickLink($link);
+			//$element->clickLink($link);
+			$this->assert(null !== $this->getSession()->getPage()->findLink($link), "Link not found");
+	}
+//   /**
+// 	 * Clicks link with specified id|title|alt|text
+// 	 * Example: When I follow "Log In" in the "#form"
+// 	 *
+// 	 * @When /^(?:|I )follow "(?P<link>(?:[^"]|\\")*)" in the "(?P<region>(?:[^"]|\\")*)"$/
+// 	 */
+// 	public function followLinkInTheRegion($link, $region)
+// 	{
+// 			$link = $this->fixStepArgument($link);
+// 			$element = $this->getSession()->getPage()->find("region", $region);
+// 			$this->assert(isset($element), "Element not found");
+// 			$element->clickLink($link);
+// 	}
+	/**
+	 * Finds button with specified id|name|title|alt|value
+	 * Example: When I push "Log In"
+	 * Example: And I push "Log In"
+	 *
+	 * @When /^(?:|I )find "(?P<button>(?:[^"]|\\")*)"$/
+	 */
+	public function findButton($button)
+	{
+			$button = $this->fixStepArgument($button);
+			$this->assert(null !== $this->getSession()->getPage()->findButton($button), "Button not found");
+			$this->getSession()->getPage()->pressButton($button);
 	}
   /**
 	 * Returns fixed step argument (with \\" replaced back to ")
