@@ -13,3 +13,9 @@
 # Ignore directories: files, private
 files
 private
+
+# Ignore migration bash files
+migration_*.sh
+
+# Ignore a list of files to be excluded from rsync
+exclude.txt
