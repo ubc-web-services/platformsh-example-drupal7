@@ -63,7 +63,7 @@ web:
             # Rules for specific URI patterns.
             rules:
                 # Allow access to common static files.
-                '\.(jpe?g|png|gif|svgz?|css|pdf|js|map|mov|mp4|mp3|ico|bmp|eot|woff2?|otf|ttf)$':
+                '\.(jpe?g|png|gif|svgz?|css|js|map|pdfx?|docx?|xlsx?|mov|mp4|mp3|ico|bmp|eot|woff2?|otf|ttf)$':
                     allow: true
                 '^/robots\.txt$':
                     allow: true
