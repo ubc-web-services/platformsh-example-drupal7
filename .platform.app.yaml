@@ -116,6 +116,8 @@ hooks:
         # global Drush directory.
         drush dl registry_rebuild-7.x-2.3 --yes
 
+        # Enable UBC Healthcheck module
+        drush en ubc_healthcheck --yes
         # Download site_audit to use later. This installs to the
         # global Drush directory.
         # drush dl site_audit-7.x-1.x-dev --yes
