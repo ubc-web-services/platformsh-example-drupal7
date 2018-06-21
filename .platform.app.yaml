@@ -140,7 +140,7 @@ hooks:
         set -e
 
         # Enable UBC Healthcheck module
-        drush en ubc_healthcheck -y
+        # drush en ubc_healthcheck -y
 
         # run behat shell script
         TARGET_URL="https://${BASE_URL}"
