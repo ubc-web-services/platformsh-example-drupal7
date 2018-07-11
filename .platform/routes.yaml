@@ -14,7 +14,7 @@
         min_version: TLSv1.2
         strict_transport_security:
             enabled: true
-            include_subdomains: true
+            include_subdomains: false
             preload: true
 
 # strip www prefix
