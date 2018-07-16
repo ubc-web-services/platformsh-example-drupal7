@@ -9,13 +9,13 @@
     cache:
         enabled: true
         # Base the cache on the session, simplesaml cookies. Ignore all other cookies.
-        cookies: ['/^SS?ESS/', '/^SimpleSAML/']
+        cookies: ['/^SS?ESS/', '/^SimpleSAML/', '__blackfire']
     tls:
         min_version: TLSv1.2
         strict_transport_security:
             enabled: true
             include_subdomains: false
-            preload: true
+            # preload: true
 
 # strip www prefix
 "https://www.{default}/":
