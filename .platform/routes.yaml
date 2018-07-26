@@ -15,7 +15,7 @@
         strict_transport_security:
             enabled: true
             include_subdomains: false
-            preload: true
+            # preload: true
 
 # strip www prefix
 "https://www.{default}/":
